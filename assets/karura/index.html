@@ -1,0 +1,80 @@
+<html lang="en-us">
+
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+<link href="css/ldpi.css" media="screen and (-webkit-min-device-pixel-ratio: 0.75)" rel="stylesheet">
+
+<link href="css/mdpi.css" media="screen and (-webkit-min-device-pixel-ratio: 1.0)" rel="stylesheet">
+
+<link href="css/hdpi.css" media="screen and (-webkit-min-device-pixel-ratio: 1.5)" rel="stylesheet">
+
+<link href="css/xhdpi.css" media="screen and (-webkit-min-device-pixel-ratio: 2.0)" rel="stylesheet">
+
+
+
+
+
+<script src="js/vendors/debug.js" type="text/javascript"></script><script src="js/framework/namespace.js" type="text/javascript"></script><script src="js/framework/scripts.js" type="text/javascript"></script><script src="js/framework/object_map.js" type="text/javascript"></script><script src="js/framework/dispatcher.js" type="text/javascript"></script><script src="js/frameworks/karura.js" type="text/javascript"></script><script src="js/vendors/jquery/jquery.js" type="text/javascript"></script><script src="js/vendors/underscore/underscore.js" type="text/javascript"></script><script src="js/vendors/backbone/backbone.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    
+<article>
+        
+<header></header>
+        
+<section>Loading...</section>
+        
+<footer></footer>
+    
+</article>
+
+<script type="text/x-tmpl" id="tmpl_empty_view">
+<div> Hello World!</div>
+</script>
+
+<script>
+
+var browserHelper = window.exports.BrowserHelper.getInstance();
+var isDomReady = false;
+var isFrameworkReady = false;
+
+browserHelper.setDOMReadyListener(function() {
+	isDomReady = true;
+	launchApp();
+});
+
+function frameworkReady(){
+	isFrameworkReady = true;
+	launchApp();
+}
+
+function launchApp(){
+	if (!isFrameworkReady || !isDomReady){
+		return;
+	}
+     
+	debug.info("[index.html] starting app...")
+    
+	var karura = new exports.Karura();
+    globals.karura = karura;
+    
+    karura.setDispatchHandle('window.globals.karura');
+    
+    globals.app = new window.exports.app.Application.getInstance({
+		view : $('article'),
+		karura : karura
+    });
+
+    globals.app.start();
+}
+
+</script>
+
+</body>
+
+</html>

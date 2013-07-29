@@ -1,0 +1,28 @@
+<project name="net-project">
+	<!-- utility macro defs -->
+	<import file="ant-contrib-fragment.xml"/>
+
+	<macrodef name="download-if-needed">
+		<attribute name="url-to-download" />
+		<attribute name="local-file-name" />
+		<attribute name="local-download-dir" />
+		<sequential>
+			<local name="local.file.available" />
+			<available file="@{local-download-dir}/@{local-file-name}"
+			           property="local.file.available" />
+			<if>
+				<not>
+					<isset property="local.file.available" />
+				</not>
+				<then>
+					<get dest="@{local-download-dir}/@{local-file-name}"
+					     skipexisting="true"
+					     src="@{url-to-download}"
+					     verbose="true" />
+					
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+	
+</project>

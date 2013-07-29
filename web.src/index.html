@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" media="screen and (-webkit-min-device-pixel-ratio: 0.75)" href="css/ldpi.css" />
+<link rel="stylesheet" media="screen and (-webkit-min-device-pixel-ratio: 1.0)" href="css/mdpi.css" />
+<link rel="stylesheet" media="screen and (-webkit-min-device-pixel-ratio: 1.5)" href="css/hdpi.css" />
+<link rel="stylesheet" media="screen and (-webkit-min-device-pixel-ratio: 2.0)" href="css/xhdpi.css" />
+
+
+<script type="javascript/dependency">
+[
+	{
+		"name": "debug",
+		"path": "js/vendors/debug.js"
+	},
+	{
+		"name": "jquery",
+		"path": "js/vendors/jquery/jquery.js"
+	},
+	{
+		"name":	"underscore",
+		"path" : "js/vendors/underscore/underscore.js",
+		"depends" : ["jquery"]
+	},
+	{
+		"name":	"backbone",
+		"path" : "js/vendors/backbone/backbone.js",
+		"depends" : ["jquery", "underscore"]
+	},
+	{
+		"name": "namespace",
+		"path": "js/framework/namespace.js",
+		"depends" : ["debug"]
+	},
+	{
+		"name": "object_map",
+		"path": "js/framework/object_map.js",
+		"depends" : ["namespace"]
+	},
+	{
+		"name" : "scripts",
+		"path" : "js/framework/scripts.js",
+		"depends" : ["namespace"]
+	},
+	{
+		"name" : "dispatcher",
+		"path" : "js/framework/dispatcher.js",
+		"depends" : ["namespace"]
+	},
+	{
+		"name": "karura",
+		"path": "js/frameworks/karura.js",
+		"depends" : ["dispatcher", "object_map"]
+	},
+]
+</script>
+
+</head>
+<body>
+
+    <article>
+        <header></header>
+        <section>Loading...</section>
+        <footer></footer>
+    </article>
+
+@templates@
+
+<script>
+
+var browserHelper = window.exports.BrowserHelper.getInstance();
+var isDomReady = false;
+var isFrameworkReady = false;
+
+browserHelper.setDOMReadyListener(function() {
+	isDomReady = true;
+	launchApp();
+});
+
+function frameworkReady(){
+	isFrameworkReady = true;
+	launchApp();
+}
+
+function launchApp(){
+	if (!isFrameworkReady || !isDomReady){
+		return;
+	}
+     
+	debug.info("[index.html] starting app...")
+    
+	var karura = new exports.Karura();
+    globals.karura = karura;
+    
+    karura.setDispatchHandle('window.globals.karura');
+    
+    globals.app = new window.exports.app.Application.getInstance({
+		view : $('article'),
+		karura : karura
+    });
+
+    globals.app.start();
+}
+
+</script>
+</body>
+</html>
